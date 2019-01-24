@@ -29,8 +29,8 @@
             <div class="navbar-right-container" style="display: flex;">
               <div class="navbar-menu-container">
                 <span class="navbar-link" v-text="nickName" v-if="nickName"></span>
-                <a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true" v-if="!nickName">Login</a>
-                <a href="javascript:void(0)" class="navbar-link" @click="logOut" v-else>Logout</a>
+                <a href="javascript:void(0)" class="navbar-link"  v-if="!nickName">Login</a>
+                <a href="javascript:void(0)" class="navbar-link"  v-else>Logout</a>
                 <div class="navbar-cart-container">
                   <span class="navbar-cart-count" v-text="cartCount" v-if="cartCount"></span>
                   <a class="navbar-link navbar-cart-link" href="/#/cart">
@@ -46,7 +46,7 @@
           <div class="md-modal-inner">
             <div class="md-top">
               <div class="md-title">Login in</div>
-              <button class="md-close" @click="loginModalFlag=false">Close</button>
+              <button class="md-close">Close</button>
             </div>
             <div class="md-content">
               <div class="confirm-tips">
@@ -65,12 +65,12 @@
                 </ul>
               </div>
               <div class="login-wrap">
-                <a href="javascript:;" class="btn-login" @click="login">登  录</a>
+                <a href="javascript:;" class="btn-login" >登  录</a>
               </div>
             </div>
           </div>
         </div>
-        <div class="md-overlay" v-if="loginModalFlag" @click="loginModalFlag=false"></div>
+        <div class="md-overlay" v-if="loginModalFlag" ></div>
     </header>
 </template>
 <style>
@@ -148,5 +148,16 @@
     import 'assets/css/login.css'
     import axios from 'axios'
     import { mapState } from 'vuex'
-    export default{}
+    export default{
+      data() {
+        return {
+          userName:'admin',
+          userPwd:'123456',
+          errorTip:false,
+          loginModalFlag:false,
+          nickName: '',
+          cartCount: 0
+        }
+      }
+    }
 </script>
