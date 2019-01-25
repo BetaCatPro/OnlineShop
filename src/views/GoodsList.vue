@@ -30,11 +30,11 @@
                 <ul>
                   <li v-for="item in goodsList">
                     <div class="pic">
-                      <a href="#"><img v-lazy="`/static/${item.prodcutImg}`" alt=""></a>
+                      <a href="#"><img v-lazy="`/static/${item.productImage}`" alt=""></a>
                     </div>
                     <div class="main">
                       <div class="name">{{item.productName}}</div>
-                      <div class="price">{{item.prodcutPrice}}￥</div>
+                      <div class="price">{{item.salePrice}}￥</div>
                       <div class="btn-area">
                         <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
                       </div>
@@ -42,12 +42,12 @@
                   </li>
                 </ul>
               </div>
-<!--               <div class="view-more-normal"
+              <div class="view-more-normal"
                    v-infinite-scroll="loadMore"
                    infinite-scroll-disabled="busy"
                    infinite-scroll-distance="20">
                 <img src="./../assets/loading-spinning-bubbles.svg" v-show="loading">
-              </div> -->
+              </div>
             </div>
           </div>
         </div>
@@ -129,10 +129,35 @@
       }
     },
     methods: {
-      getGoodsList() {
-        axios.get('/api/goods').then((res) => {
-          let resData = res.data.data.result;
-          this.goodsList = resData;
+      getGoodsList(flag) {
+        let param = {
+          page: this.page,
+          pageSize: this.pageSize,
+          sort: this.sortFlag ? 1 : -1
+        };
+
+        this.loading = true;
+
+        axios.get('/api/goods/list', {params: param}).then((res) => {
+          this.loading = false;
+          let data = res.data;
+          if(data.status === '0'){
+            if(flag){
+              this.goodsList = this.goodsList.concat(data.result.list);
+
+              if(data.result.list == 0){
+                this.busy = true;
+              } else {
+                this.busy = false;
+              }
+
+            } else {
+              this.goodsList = data.result.list;
+              this.busy = false;
+            }
+          } else {
+            this.goodsList = [];
+          }
         });
       },
       showFilterPop() {
@@ -147,9 +172,19 @@
         this.priceChecked = index;
         this.closePop();
       },
-      sortGoods() {},
+      sortGoods() {
+        this.sortFlag = !this.sortFlag;
+        this.page = 1;
+        this.getGoodsList();
+      },
       closeModal() {},
-      loadMore() {},
+      loadMore() {
+        this.busy = true;
+        setTimeout(() => {
+          this.page++;
+          this.getGoodsList(true);
+        }, 500);
+      },
     },
     components: {
       NavBread,

@@ -12,10 +12,10 @@ const portfinder = require('portfinder')
 
 const express =  require('express')
 //express
-let app = express()
-let goodsData = require('./../mock/goods.json')
-let apiRouters = express.Router()
-app.use('/api', apiRouters)
+// let app = express()
+// let goodsData = require('./../mock/goods.json')
+// let apiRouters = express.Router()
+// app.use('/api', apiRouters)
 
 
 const HOST = process.env.HOST
@@ -30,14 +30,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
-    before(app) {
-      app.get('/api/goods', (req, res) => {
-        res.json({
-          errno: 0,
-          data: goodsData
-        })
-      })
-    },
+    // before(app) {
+    //   app.get('/api/goods', (req, res) => {
+    //     res.json({
+    //       errno: 0,
+    //       data: goodsData
+    //     })
+    //   })
+    // },
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [

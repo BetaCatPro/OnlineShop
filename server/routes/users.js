@@ -1,9 +1,6 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
+let mongoose = require('mongoose');
+let Goods = require('../models/goods');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
-
-module.exports = router;
+mongoose.connect('mongodb://127.0.0.1:27017/dumall');
