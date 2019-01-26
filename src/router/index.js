@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import GoodsList from 'views/GoodsList'
-import Cart from '@/views/Cart'
+import Cart from 'views/Cart'
 
 Vue.use(Router)
 
