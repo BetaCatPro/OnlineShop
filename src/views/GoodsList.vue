@@ -30,7 +30,7 @@
                 <ul>
                   <li v-for="item in goodsList">
                     <div class="pic">
-                      <a href="#"><img v-lazy="'static/'+item.productImage" alt=""></a>
+                      <a href="#"><img v-lazy="`static/${item.productImage}`" alt=""></a>
                     </div>
                     <div class="main">
                       <div class="name">{{item.productName}}</div>
@@ -178,7 +178,7 @@
           var res = res.data;
           if (res.status == 0) {
             this.mdShowCart = true;
-            this.$store.commit("updateCartCount", 1);
+            // this.$store.commit("updateCartCount", 1);
           } else {
             this.mdShow = true;
           }

@@ -10,7 +10,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/dumall');
 // mongoose.conneciton.on('error', () => {});
 // mongoose.conneciton.on('disconnected', () => {});
 
-router.get("/list", function (req,res,next) {
+router.get("/list", (req,res,next) => {
   let page = parseInt(req.param("page"));
   let pageSize = parseInt(req.param("pageSize"));
   let priceLevel = req.param("priceLevel");
@@ -34,7 +34,7 @@ router.get("/list", function (req,res,next) {
   }
   let goodsModel = Goods.find(params).skip(skip).limit(pageSize);
   goodsModel.sort({'salePrice':sort});
-  goodsModel.exec(function (err,doc) {
+  goodsModel.exec((err,doc) => {
       if(err){
           res.json({
             status:'1',
@@ -72,11 +72,11 @@ router.get("/list", function (req,res,next) {
 });
 
 //加入到购物车
-router.post("/addCart", function (req,res,next) {
+router.post("/addCart", (req,res,next) => {
   let userId = '100000077';
   let productId = req.body.productId;
   let User = require('../models/user');
-  User.findOne({userId:userId}, function (err,userDoc) {
+  User.findOne({userId:userId}, (err,userDoc) => {
     if(err){
         res.json({
             status:"1",
@@ -86,14 +86,14 @@ router.post("/addCart", function (req,res,next) {
         console.log("userDoc:"+userDoc);
         if(userDoc){
           let goodsItem = '';
-          userDoc.cartList.forEach(function (item) {
+          userDoc.cartList.forEach((item) => {
               if(item.productId == productId){
                 goodsItem = item;
                 item.productNum ++;
               }
           });
           if(goodsItem){
-            userDoc.save(function (err2,doc2) {
+            userDoc.save((err2,doc2) => {
               if(err2){
                 res.json({
                   status:"1",
@@ -108,7 +108,7 @@ router.post("/addCart", function (req,res,next) {
               }
             })
           }else{
-            Goods.findOne({productId:productId}, function (err1,doc) {
+            Goods.findOne({productId:productId}, (err1,doc) => {
               if(err1){
                 res.json({
                   status:"1",
@@ -119,7 +119,7 @@ router.post("/addCart", function (req,res,next) {
                   doc.productNum = 1;
                   doc.checked = 1;
                   userDoc.cartList.push(doc);
-                  userDoc.save(function (err2,doc2) {
+                  userDoc.save((err2,doc2) => {
                     if(err2){
                       res.json({
                         status:"1",

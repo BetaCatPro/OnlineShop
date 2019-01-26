@@ -13,6 +13,15 @@ module.exports = {
     proxyTable: {
         '/api/goods': {
             target: 'http://localhost:8000'
+        },
+        '/api/goods/*': {
+            target: 'http://localhost:8000'
+        },
+        '/api/users': {
+            target: 'http://localhost:8000'
+        },
+        '/api/users/*': {
+            target: 'http://localhost:8000'
         }
     },
 
