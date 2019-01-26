@@ -5,7 +5,7 @@ let Goods = require('../models/goods');
 
 mongoose.connect('mongodb://127.0.0.1:27017/dumall');
 
-//为啥on 有错呢！？
+//为啥on有错呢！？
 // mongoose.conneciton.on('connected', () => {});
 // mongoose.conneciton.on('error', () => {});
 // mongoose.conneciton.on('disconnected', () => {});
@@ -51,9 +51,26 @@ router.get("/list", function (req,res,next) {
           });
       }
   })
+
+  // Goods.find({}, (err, doc) => {
+  //     if(err){
+  //         res.json({
+  //           status:'1',
+  //           msg:err.message
+  //         });
+  //     }else{
+  //         res.json({
+  //             status:'0',
+  //             msg:'',
+  //             result:{
+  //                 count:doc.length,
+  //                 list:doc
+  //             }
+  //         });
+  //     }
+  // });
 });
 
-//加入购物车
 //加入到购物车
 router.post("/addCart", function (req,res,next) {
   let userId = '100000077';

@@ -30,11 +30,11 @@
                 <ul>
                   <li v-for="item in goodsList">
                     <div class="pic">
-                      <a href="#"><img v-lazy="`/static/${item.productImage}`" alt=""></a>
+                      <a href="#"><img v-lazy="'static/'+item.productImage" alt=""></a>
                     </div>
                     <div class="main">
                       <div class="name">{{item.productName}}</div>
-                      <div class="price">{{item.salePrice}}￥</div>
+                      <div class="price">{{item.salePrice}}$</div>
                       <div class="btn-area">
                         <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
                       </div>
@@ -84,81 +84,109 @@
   import NavBread from 'components/NavBread'
   import Modal from 'components/Modal'
   import axios from 'axios'
-  export default{
-    data(){
+  export default {
+    data() {
       return {
-        goodsList:[],
-        sortFlag:true,
-        page:1,
-        pageSize:8,
-        busy:true,
-        loading:false,
-        mdShow:false,
-        mdShowCart:false,
-        priceFilter:[
-          {
-              startPrice:'0.00',
-              endPrice:'100.00'
-          },
-          {
-            startPrice:'100.00',
-            endPrice:'500.00'
-          },
-          {
-            startPrice:'500.00',
-            endPrice:'1000.00'
-          },
-          {
-            startPrice:'1000.00',
-            endPrice:'5000.00'
-          }
-        ],
-        priceChecked:'all',
-        filterBy:false,
-        overLayFlag:false
+        goodsList: [],
+        sortFlag: true,
+        page: 1,
+        pageSize: 8,
+        busy: true,
+        loading: false,
+        mdShow: false,
+        mdShowCart: false,
+        priceFilter: [{
+          startPrice: '0.00',
+          endPrice: '100.00'
+        }, {
+          startPrice: '100.00',
+          endPrice: '500.00'
+        }, {
+          startPrice: '500.00',
+          endPrice: '1000.00'
+        }, {
+          startPrice: '1000.00',
+          endPrice: '5000.00'
+        }],
+        priceChecked: 'all',
+        filterBy: false,
+        overLayFlag: false
       }
     },
     mounted() {
       this.getGoodsList();
     },
-    filters: {
-      money: function (value) {
-        if (!value) return ''
-        value = value.toString()
-        return value
-      }
+    components: {
+      NavHeader,
+      NavFooter,
+      NavBread,
+      Modal
     },
     methods: {
       getGoodsList(flag) {
-        let param = {
+        var param = {
           page: this.page,
           pageSize: this.pageSize,
-          sort: this.sortFlag ? 1 : -1
+          sort: this.sortFlag ? 1 : -1,
+          priceLevel: this.priceChecked
         };
-
         this.loading = true;
-
-        axios.get('/api/goods/list', {params: param}).then((res) => {
+        axios.get("/api/goods/list", {
+          params: param
+        }).then((response) => {
+          var res = response.data;
           this.loading = false;
-          let data = res.data;
-          if(data.status === '0'){
-            if(flag){
-              this.goodsList = this.goodsList.concat(data.result.list);
+          if (res.status == "0") {
+            if (flag) {
+              this.goodsList = this.goodsList.concat(res.result.list);
 
-              if(data.result.list == 0){
+              if (res.result.count == 0) {
                 this.busy = true;
               } else {
                 this.busy = false;
               }
-
             } else {
-              this.goodsList = data.result.list;
+              this.goodsList = res.result.list;
               this.busy = false;
             }
           } else {
             this.goodsList = [];
           }
         });
+      },
+      sortGoods() {
+        this.sortFlag = !this.sortFlag;
+        this.page = 1;
+        this.getGoodsList();
+      },
+      setPriceFilter(index) {
+        this.priceChecked = index;
+        this.page = 1;
+        this.getGoodsList();
+      },
+      loadMore() {
+        this.busy = true;
+        setTimeout(() => {
+          this.page++;
+          this.getGoodsList(true);
+        }, 500);
+      },
+      addCart(productId) {
+        axios.post("/api/goods/addCart", {
+          productId: productId
+        }).then((res) => {
+          var res = res.data;
+          if (res.status == 0) {
+            this.mdShowCart = true;
+            this.$store.commit("updateCartCount", 1);
+          } else {
+            this.mdShow = true;
+          }
+        });
+      },
+      closeModal() {
+        this.mdShow = false;
+        this.mdShowCart = false;
       },
       showFilterPop() {
         this.filterBy = true;
@@ -167,30 +195,8 @@
       closePop() {
         this.filterBy = false;
         this.overLayFlag = false;
-      },
-      setPriceFilter(index) {
-        this.priceChecked = index;
-        this.closePop();
-      },
-      sortGoods() {
-        this.sortFlag = !this.sortFlag;
-        this.page = 1;
-        this.getGoodsList();
-      },
-      closeModal() {},
-      loadMore() {
-        this.busy = true;
-        setTimeout(() => {
-          this.page++;
-          this.getGoodsList(true);
-        }, 500);
-      },
-    },
-    components: {
-      NavBread,
-      NavFooter,
-      NavHeader,
-      Modal
+        this.mdShowCart = false;
+      }
     }
   }
 </script>
