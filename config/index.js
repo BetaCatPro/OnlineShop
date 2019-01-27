@@ -16,11 +16,7 @@ module.exports = {
         },
         '/api/goods/*': {
             target: 'http://localhost:8000'
-        },
-        '/api/users': {
-            target: 'http://localhost:8000'
-        },
-        '/api/users/*': {
+        },        '/api/users/*': {
             target: 'http://localhost:8000'
         }
     },

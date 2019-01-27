@@ -190,14 +190,14 @@
             return this.checkedCount == this.cartList.length;
           },
           checkedCount(){
-            var i = 0;
+            let i = 0;
             this.cartList.forEach((item)=>{
               if(item.checked=='1')i++;
             })
             return i;
           },
           totalPrice(){
-            var money = 0;
+            let money = 0;
             this.cartList.forEach((item)=>{
               if(item.checked=='1'){
                 money += parseFloat(item.salePrice)*parseInt(item.productNum);
@@ -233,7 +233,7 @@
                   let res = response.data;
                   if(res.status == '0'){
                     this.modalConfirm = false;
-                    var delCount = this.delItem.productNum;
+                    let delCount = this.delItem.productNum;
                     this.$store.commit("updateCartCount",-delCount);
                     this.init();
                   }
@@ -258,12 +258,12 @@
                 }).then((response)=>{
                     let res = response.data;
                     if(res.status=="0"){
-                      this.$store.commit("updateCartCount",flag=="add"?1:-1);
+                      // this.$store.commit("updateCartCount",flag=="add"?1:-1);
                     }
                 })
             },
             toggleCheckAll(){
-                var flag = !this.checkAllFlag;
+                let flag = !this.checkAllFlag;
                 this.cartList.forEach((item)=>{
                   item.checked = flag?'1':'0';
                 })

@@ -1,6 +1,6 @@
 <template>
     <div>
-      <nav-header></nav-header>
+      <nav-header @showCart="showCart"></nav-header>
       <nav-bread>
         <span>Goods</span>
       </nav-bread>
@@ -128,7 +128,7 @@
     },
     methods: {
       getGoodsList(flag) {
-        var param = {
+        let param = {
           page: this.page,
           pageSize: this.pageSize,
           sort: this.sortFlag ? 1 : -1,
@@ -138,7 +138,7 @@
         axios.get("/api/goods/list", {
           params: param
         }).then((response) => {
-          var res = response.data;
+          let res = response.data;
           this.loading = false;
           if (res.status == "0") {
             if (flag) {
@@ -179,8 +179,8 @@
         axios.post("/api/goods/addCart", {
           productId: productId
         }).then((res) => {
-          var res = res.data;
-          if (res.status == 0) {
+          let resDate = res.data;
+          if (resDate.status == 0) {
             this.mdShowCart = true;
             // this.$store.commit("updateCartCount", 1);
           } else {
@@ -200,6 +200,9 @@
         this.filterBy = false;
         this.overLayFlag = false;
         this.mdShowCart = false;
+      },
+      showCart(data) {
+        this.mdShow = data.mdShow;
       }
     }
   }

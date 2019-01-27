@@ -33,7 +33,7 @@
                 <a href="javascript:void(0)" class="navbar-link" @click="logOut" v-else>Logout</a>
                 <div class="navbar-cart-container">
                   <span class="navbar-cart-count" v-text="cartCount" v-if="cartCount"></span>
-                  <a class="navbar-link navbar-cart-link" href="/#/cart">
+                  <a class="navbar-link navbar-cart-link" @click="showCart">
                     <svg class="navbar-cart-logo">
                       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
                     </svg>
@@ -223,6 +223,15 @@
               axios.get("/api/users/getCartCount").then(res=>{
                 var res = res.data;
                 // this.$store.commit("updateCartCount",res.result);
+              });
+            },
+            showCart() {
+              axios.get('/api/users/cartList').then((res) => {
+                if(res.data.status == '10001'){
+                  this.$emit('showCart',{mdShow: true});
+                } else {
+                  this.$router.push('cart');
+                }
               });
             }
         }

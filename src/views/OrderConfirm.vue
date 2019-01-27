@@ -128,10 +128,12 @@
   </div>
 </template>
 <script>
-  import NavHeader from './../components/NavHeader'
-  import NavFooter from './../components/NavFooter'
-  import NavBread from './../components/NavBread'
-  import {currency} from './../util/currency'
+  import 'assets/css/base.css'
+  import 'assets/css/checkout.css'
+  import NavHeader from 'components/NavHeader'
+  import NavFooter from 'components/NavFooter'
+  import NavBread from  'components/NavBread'
+  import {currency} from 'util/currency'
   import axios from 'axios'
   export default{
       data(){
@@ -157,7 +159,7 @@
       },
       methods:{
          init(){
-            axios.get("/users/cartList").then((response)=>{
+            axios.get("/api/users/cartList").then((response)=>{
                 let res = response.data;
                 this.cartList = res.result;
 
@@ -171,8 +173,8 @@
             });
          },
           payMent(){
-              var addressId = this.$route.query.addressId;
-              axios.post("/users/payMent",{
+              let addressId = this.$route.query.addressId;
+              axios.post("/api/users/payMent",{
                 addressId:addressId,
                 orderTotal:this.orderTotal
               }).then((response)=>{

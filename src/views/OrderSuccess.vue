@@ -38,10 +38,12 @@
     </div>
 </template>
 <script>
-    import NavHeader from './../components/NavHeader'
-    import NavFooter from './../components/NavFooter'
-    import NavBread from './../components/NavBread'
-    import {currency} from './../util/currency'
+    import 'assets/css/base.css'
+    import 'assets/css/checkout.css'
+    import NavHeader from 'components/NavHeader'
+    import NavFooter from 'components/NavFooter'
+    import NavBread from 'components/NavBread'
+    import {currency} from 'util/currency'
     import axios from 'axios'
     export default{
         data(){
@@ -59,12 +61,12 @@
           currency:currency
         },
         mounted(){
-            var orderId = this.$route.query.orderId;
+            let orderId = this.$route.query.orderId;
             console.log("orderId:"+orderId);
             if(!orderId){
               return;
             }
-            axios.get("/users/orderDetail",{
+            axios.get("/api/users/orderDetail",{
                 params:{
                   orderId:orderId
                 }
