@@ -53,7 +53,7 @@
         </div>
       </div>
       <modal v-bind:mdShow="mdShow" v-on:close="closeModal">
-          <p slot="message">
+          <p slot="message" ref="errInfo">
              请先登录,否则无法加入到购物车中!
           </p>
           <div slot="btnGroup">
@@ -182,7 +182,7 @@
           let resDate = res.data;
           if (resDate.status == 0) {
             this.mdShowCart = true;
-            // this.$store.commit("updateCartCount", 1);
+            this.$store.commit("updateCartCount",1);
           } else {
             this.mdShow = true;
           }
@@ -203,6 +203,7 @@
       },
       showCart(data) {
         this.mdShow = data.mdShow;
+        this.$refs.errInfo.innerHTML = '登录后才能使用购物车功能';
       }
     }
   }

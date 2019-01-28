@@ -147,27 +147,19 @@
 <script>
     import 'assets/css/login.css'
     import axios from 'axios'
-    // import { mapState } from 'vuex'
+    import { mapState } from 'vuex'
     export default{
         data(){
             return{
               userName:'admin',
               userPwd:'123456',
               errorTip:false,
-              loginModalFlag:false,
-              nickName: '',
-              cartCount: ''
+              loginModalFlag:false
             }
         },
-        // computed:{
-        //   ...mapState(['nickName','cartCount'])
-        // },
-        /*nickName(){
-          return this.$store.state.nickName;
+        computed:{
+          ...mapState(['nickName','cartCount'])
         },
-        cartCount(){
-          return this.$store.state.cartCount;
-        }*/
         mounted(){
             this.checkLogin();
         },
@@ -175,16 +167,14 @@
             checkLogin(){
                 axios.get("/api/users/checkLogin").then((response)=>{
                     var res = response.data;
-                    // var path = this.$route.pathname;
+                    var path = this.$route.pathname;
                     if(res.status=="0"){
-                     this.nickName = res.result;
-                      // this.$store.commit("updateUserInfo",res.result);
+                      this.$store.commit("updateUserInfo",res.result);
                       this.loginModalFlag = false;
                     }else{
-                      // if(this.$route.path!="/goods"){
-                      //   this.$router.push("/goods");
-                      //   
-                      // }
+                      if(this.$route.path!="/goods"){
+                        this.$router.push("/goods");
+                      }
                       return;
                     }
                 });
@@ -202,8 +192,7 @@
                     if(res.status=="0"){
                       this.errorTip = false;
                       this.loginModalFlag = false;
-                      this.nickName = res.result.userName;
-                      // this.$store.commit("updateUserInfo",res.result.userName);
+                      this.$store.commit("updateUserInfo",res.result.userName);
                       this.getCartCount();
                     }else{
                       this.errorTip = true;
@@ -214,15 +203,14 @@
                 axios.post("/api/users/logout").then((response)=>{
                     let res = response.data;
                     if(res.status=="0"){
-                       this.nickName = '';
-                        // this.$store.commit("updateUserInfo",res.result.userName);
+                        this.$store.commit("updateUserInfo",res.result.userName);
                     }
                 })
             },
             getCartCount(){
               axios.get("/api/users/getCartCount").then(res=>{
                 var res = res.data;
-                // this.$store.commit("updateCartCount",res.result);
+                this.$store.commit("updateCartCount",res.result);
               });
             },
             showCart() {

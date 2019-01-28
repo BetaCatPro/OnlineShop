@@ -258,7 +258,7 @@
                 }).then((response)=>{
                     let res = response.data;
                     if(res.status=="0"){
-                      // this.$store.commit("updateCartCount",flag=="add"?1:-1);
+                      this.$store.commit("updateCartCount",flag=="add"?1:-1);
                     }
                 })
             },

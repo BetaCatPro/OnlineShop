@@ -158,9 +158,6 @@
       mounted(){
           this.init();
       },
-      filters:{
-        currency:currency
-      },
       computed:{
         addressListFilter(){
           return this.addressList.slice(0,this.limit);
